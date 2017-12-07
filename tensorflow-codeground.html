@@ -20,8 +20,7 @@
         <div style="position:absolute;font-size:30px;left:400px;color:blueviolet;font-family:Courier New, Courier, monospace"><u>Tensorflow Codeground</u></div>
         <div id="drawing"></div>
         <button style="position:relative;left:500px;top:20px;" onclick="generate_code()">Generate Code</button>
-        <section style="border:1px solid red;display:none;position:relative;top:100px;padding:40px" id='full_code'>
-
+        <section style="border:4px solid orange;display:none;position:relative;top:100px;padding:40px" id='full_code'>
             <pre>
                 import tensorflow as tf
                 import numpy as np
@@ -113,7 +112,6 @@
                 
                     train_neural_network(x,y,x_train,y_train,batch_size,learning_rate,hm_epochs)
             </pre>
-            
 
                 
         </section>
@@ -128,6 +126,7 @@
                 document.getElementById("feature_count").innerHTML = input_node_count;
                 document.getElementById("hidden_count").innerHTML = hidden_layers;
 
+                document.getElementById("node_count").innerHTML="";
                 for(i=0;i<hidden_layers;i++){
                     var node = document.createElement('span');
                     node.textContent = "                hidden_layer" + (i+1) + "_node_count = "+ hidden_node_count[i] ;
@@ -135,6 +134,7 @@
                     var element = document.getElementById("node_count");
                     element.appendChild(node);
                 }
+                document.getElementById("hidden_params").innerHTML="";
                 for(i=0;i<(hidden_layers-1);i++){
                     var node1 = document.createElement('span');
                     node1.textContent = "                hidden_params"+(i+1)+" = {'weights':tf.Variable(tf.random_normal([hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count])),"
@@ -146,7 +146,7 @@
                     element.appendChild(node2);
                     document.getElementById("last_hidden_layer").innerHTML = "hidden_layer"+(i+2)+"_node_count";
                 }
-
+                document.getElementById("hidden_layers").innerHTML="";
                 for(i=0;i<hidden_layers;i++){
                     var node1 = document.createElement('span');
                     node1.textContent = "                hidden_layer"+(i+1)+" = tf.add(tf.matmul(data,hidden_params"+(i+1)+"['weights']), hidden_params"+(i+1)+"['biases'])";
