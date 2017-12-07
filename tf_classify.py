@@ -36,7 +36,7 @@ def neural_network_model(data):
 
 
 
-def train_neural_network(x,train_x,train_y):
+def train_neural_network(x,y,train_x,train_y):
 
     prediction = neural_network_model(x)
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y) )
@@ -48,11 +48,11 @@ def train_neural_network(x,train_x,train_y):
         for epoch in range(hm_epochs):
             epoch_loss = 0
             i=0
-            while i < len(train_x):
+            while i < len(x_train):
                 start = i
                 end = i+batch_size
-                batch_x = np.array(train_x[start:end])
-                batch_y = np.array(train_y[start:end])
+                batch_x = np.array(x_train[start:end])
+                batch_y = np.array(y_train[start:end])
 
                 _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
                                                               y: batch_y})
@@ -78,10 +78,10 @@ def main():
 
     """ training data """                x_train= ____                                                       
     """ labels for training data """     y_train= ____                                      
-    """converting labels to one hot """  y_train= convert_into_one_hot(y_train,number_of_classes)
+    """converting labels to one hot """  y_train= convert_into_one_hot(y_train,output_layer_node_count)
 
-    x = tf.placeholder('float', [None, number_of_features])
-    y = tf.placeholder('float', [None, number_of_classes])
+    x = tf.placeholder('float', [None, input_layer_node_count])
+    y = tf.placeholder('float', [None, output_layer_node_count])
 
 
     train_neural_network(x,y,x_train,y_train,batch_size,learning_rate,hm_epochs)

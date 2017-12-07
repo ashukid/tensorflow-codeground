@@ -9,7 +9,7 @@
             pre {
                 display: block;
                 font-family: monospace;
-                white-space: pre;
+                white-space: pre-wrap;
                 margin: 1em 0;
             }
         </style>
@@ -20,7 +20,7 @@
         <div style="position:absolute;font-size:30px;left:400px;color:blueviolet;font-family:Courier New, Courier, monospace"><u>Tensorflow Codeground</u></div>
         <div id="drawing"></div>
         <button style="position:relative;left:500px;top:20px;" onclick="generate_code()">Generate Code</button>
-        <section style="border:1px solid red;display:none;;position:relative;top:100px;padding:40px" id='full_code'>
+        <section style="border:1px solid red;display:none;position:relative;top:100px;padding:40px" id='full_code'>
 
             <pre>
                 import tensorflow as tf
@@ -44,11 +44,30 @@
             </pre>
 
             <pre>
-                
+                input_params = {'weights':tf.Variable(tf.random_normal([input_layer_node_count, hidden_layer1_node_count])),
+                'biases':tf.Variable(tf.random_normal([hidden_layer1_node_count]))}
+            </pre>
+            <pre id="hidden_params"></pre>
+            <pre>
+                last_hidden_layer_node_count = <span id="last_hidden_layer">hidden_layer1_node_count</span>
+                output_params = {'weights':tf.Variable(tf.random_normal([last_hidden_layer_node_count, output_layer_node_count])),
+                'biases':tf.Variable(tf.random_normal([output_layer_node_count]))}
             </pre>
 
             <pre>
-                def train_neural_network(x,train_x,train_y):
+                input_layer = tf.add(tf.matmul(data,input_params['weights']), input_params['biases'])
+                input_layer = tf.nn.relu(input_layer)
+            </pre>
+            <pre id="hidden_layers"></pre>
+
+            <pre>
+                last_layer = <span id="last_layer">input_layer</span>
+                output_layer = tf.matmul(last_layer,output_params['weights']) + output_params['biases']
+                return output_layer
+            </pre>
+
+            <pre>
+                def train_neural_network(x,y,x_train,y_train):
                 
                     prediction = neural_network_model(x)
                     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y) )
@@ -60,14 +79,13 @@
                         for epoch in range(hm_epochs):
                             epoch_loss = 0
                             i=0
-                            while i < len(train_x):
+                            while i < len(x_train):
                                 start = i
                                 end = i+batch_size
-                                batch_x = np.array(train_x[start:end])
-                                batch_y = np.array(train_y[start:end])
+                                batch_x = np.array(x_train[start:end])
+                                batch_y = np.array(y_train[start:end])
                 
-                                _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
-                                                                                y: batch_y})
+                                _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,y: batch_y})
                                 epoch_loss += c
                                 i+=batch_size
                                 
@@ -87,10 +105,10 @@
                 
                     """ training data """                x_train= ____                                                       
                     """ labels for training data """     y_train= ____                                      
-                    """converting labels to one hot """  y_train= convert_into_one_hot(y_train,number_of_classes)
+                    """converting labels to one hot """  y_train= convert_into_one_hot(y_train,output_layer_node_count)
                 
-                    x = tf.placeholder('float', [None, number_of_features])
-                    y = tf.placeholder('float', [None, number_of_classes])
+                    x = tf.placeholder('float', [None, input_layer_node_count])
+                    y = tf.placeholder('float', [None, output_layer_node_count])
                 
                 
                     train_neural_network(x,y,x_train,y_train,batch_size,learning_rate,hm_epochs)
@@ -116,6 +134,30 @@
                     node.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
                     var element = document.getElementById("node_count");
                     element.appendChild(node);
+                }
+                for(i=0;i<(hidden_layers-1);i++){
+                    var node1 = document.createElement('span');
+                    node1.textContent = "                hidden_params"+(i+1)+" = {'weights':tf.Variable(tf.random_normal([hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count])),"
+                    node1.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+                    var node2 = document.createElement('span');
+                    node2.textContent = "                'biases':tf.Variable(tf.random_normal([hidden_layer"+(i+2)+"_node_count]))}"
+                    var element = document.getElementById("hidden_params");
+                    element.appendChild(node1);
+                    element.appendChild(node2);
+                    document.getElementById("last_hidden_layer").innerHTML = "hidden_layer"+(i+2)+"_node_count";
+                }
+
+                for(i=0;i<hidden_layers;i++){
+                    var node1 = document.createElement('span');
+                    node1.textContent = "                hidden_layer"+(i+1)+" = tf.add(tf.matmul(data,hidden_params"+(i+1)+"['weights']), hidden_params"+(i+1)+"['biases'])";
+                    node1.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+                    var node2 = document.createElement('span');
+                    node2.textContent = "                hidden_layer"+(i+1)+" = tf.nn.relu(hidden_layer"+(i+1)+")";
+                    node2.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+                    var element = document.getElementById("hidden_layers");
+                    element.appendChild(node1);
+                    element.appendChild(node2);
+                    document.getElementById("last_layer").innerHTML = "hidden_layer"+(i+1);
                 }
 
 
