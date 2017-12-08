@@ -15,11 +15,12 @@
         </style>
         <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
     </head>
     <body height='100%' width='100%'>
-        <div style="position:absolute;font-size:30px;left:400px;color:blueviolet;font-family:Courier New, Courier, monospace"><u>Tensorflow Codeground</u></div>
+        <div style="position:absolute;font-size:30px;left:400px;color:black;font-family: 'Berkshire Swash', cursive;">Tensorflow Codeground</div>
         <div id="drawing"></div>
-        <button style="position:relative;left:500px;top:20px;" onclick="generate_code()">Generate Code</button>
+        <button style="position:relative;left:500px;top:20px;margin:30px;" onclick="generate_code()">Generate Code</button>
         <section style="display:none;position:relative;top:100px;padding:40px" id='full_code'>
 
 <!-- main code starts here -->  
@@ -171,8 +172,9 @@ def main():
             }
 
 
-
-            var draw = SVG('drawing').size(1100,600)
+            var screen_width = screen.width;
+            var screen_height = screen.height;
+            var draw = SVG('drawing').size("100%","100%")
             var group = draw.group();
             var group_button = draw.group();
 
@@ -184,13 +186,13 @@ def main():
             var hidden_node_count=[3,2];
             var hidden_layers = hidden_node_count.length;
             var total_layers=hidden_layers+2;
-            var height_offset=100;
-            var width_offset=Math.floor(1000/total_layers);
+            var height_offset=60;
+            var width_offset=Math.floor(1100/total_layers);
 
             // Non changable variables
             var start_x=100;
-            var start_y=100;
-            var color = ['red','green','blue','pink','purple'];
+            var start_y=150;
+            var color = ['skyblue','pink','blue','lightgreen','purple','orange','red','green','lightblue','yellow'];
 
             // button variables
 
@@ -199,29 +201,62 @@ def main():
             function draw_buttons(){
                 var remove_buttons=[];
                 var add_buttons=[];
-                var hidden_button_add;
-                var hidden_button_remove;
                 var i,j;
                 button_offset=0;
                 for(i=0;i<total_layers;i++){
-                    var temp=group_button.rect(20,20).fill('black').move(100+button_offset,70);
-                    add_buttons.push(temp);
+                    var temp=group_button.rect(18,18).fill('white').move(100+button_offset,110);
+                    temp.attr({stroke:"#000"});
+                    var text=group_button.text("+").move(100+button_offset,95);
+                    text.font({
+                        family:   'Helvetica'
+                        , size:     30
+                    });
+                    text.style('cursor:pointer;fill:#000;');
+                    add_buttons.push(text);
                     button_offset = button_offset + width_offset;
                 } 
                 button_offset=0;
                 for(i=0;i<total_layers;i++){
-                    var temp=group_button.rect(20,20).fill('brown').move(130+button_offset,70);
-                    remove_buttons.push(temp);
+                    var temp=group_button.rect(18,18).fill('white').move(130+button_offset,110);
+                    temp.attr({stroke:"#000"});
+                    var text=group_button.text("-").move(130+button_offset,75);
+                    text.font({
+                        family:   'Helvetica'
+                        , size:     50
+                    });
+                    text.style('cursor:pointer;fill:#000;');
+                    remove_buttons.push(text);
                     button_offset = button_offset + width_offset;
                 }
 
-                hidden_button_add=group_button.rect(20,20).fill('black').move(520,580);        
-                hidden_button_remove=group_button.rect(20,20).fill('brown').move(550,580); 
+                var hidden_button_add=group_button.rect(20,20).fill('white').move(610,620);
+                hidden_button_add.attr({stroke:"#000"})
+                var hidden_add_text=group_button.text("+").move(610,600);
+                hidden_add_text.font({
+                        family:   'Helvetica'
+                        , size:     35
+                    });
+                hidden_add_text.style('cursor:pointer;fill:#000;');        
+                var hidden_button_remove=group_button.rect(20,20).fill('white').move(650,620);
+                hidden_button_remove.attr({stroke:"#000"});
+                var hidden_remove_text=group_button.text("-").move(650,580);
+                hidden_remove_text.font({
+                        family:   'Helvetica'
+                        , size:     55
+                }); 
+                hidden_remove_text.style('cursor:pointer;fill:#000;');     
+
+                var text = group_button.text("Hidden Layers").move(470,620);
+                text.font({
+                    family: "Menlo"
+                });  
+                       
+                 
 
 
                 // add buttons event listener
                 add_buttons[0].click(function(){
-                    if(input_node_count < 5)
+                    if(input_node_count < 8)
                         input_node_count = input_node_count + 1;
                         main_nodes();
                     });
@@ -230,7 +265,7 @@ def main():
                     function click(i){
                         console.log(add_buttons.length);
                         add_buttons[i+1].click(function(){
-                        if(hidden_node_count[i]<5){
+                        if(hidden_node_count[i]<8){
                             hidden_node_count[i]+=1;
                         }
                         main_nodes();
@@ -240,7 +275,7 @@ def main():
                 }
 
                 add_buttons[total_layers-1].click(function(){
-                    if(output_node_count < 5)
+                    if(output_node_count < 8)
                         output_node_count = output_node_count+1;
                         main_nodes();
                 });
@@ -272,8 +307,8 @@ def main():
                 });
 
                 // hidden add button event listener
-                hidden_button_add.click(function(){
-                    if(hidden_layers < 8){
+                hidden_add_text.click(function(){
+                    if(hidden_layers < 6){
                         hidden_node_count.push(1);
                         hidden_layers = hidden_node_count.length;
                         total_layers=hidden_layers+2;
@@ -283,7 +318,7 @@ def main():
                 });
 
                 // hidden remove button event listener
-                hidden_button_remove.click(function(){
+                hidden_remove_text.click(function(){
                     if(hidden_layers > 1){
                         hidden_node_count.pop();
                         hidden_layers = hidden_node_count.length;
@@ -301,7 +336,12 @@ def main():
                 temp_width_offset=0;
                 var input_offset=0;
                 for(i=0;i<input_node_count;i++){
-                    group.rect(50,50).fill(color[i]).move(start_x,start_y+input_offset);
+                    // group.rect(40,40).fill(color[i]).move(start_x,start_y+input_offset);
+                    temp=group.rect(40,40).move(start_x,start_y+input_offset);
+                    temp.attr({
+                        fill:color[i],'fill-opacity':0.5,stroke:"#000",'stroke-width':2
+                    });
+                    temp.radius(10);
                     input_offset+=height_offset;
                 }
 
@@ -311,7 +351,11 @@ def main():
                     temp_width_offset+=width_offset;
                     hidden_offset=0;
                     for(j=0;j<total_nodes;j++){
-                        group.circle(50).fill(color[j]).move(start_x+temp_width_offset,start_y+hidden_offset);
+                        // group.circle(40).fill(color[j]).move(start_x+temp_width_offset,start_y+hidden_offset);
+                        temp=group.circle(40).move(start_x+temp_width_offset,start_y+hidden_offset);
+                        temp.attr({
+                        fill:color[j],'fill-opacity':0.5,stroke:"#000",'stroke-width':2
+                        });
                         hidden_offset+=height_offset;
                     }
                 }
@@ -319,7 +363,11 @@ def main():
                 var output_offset=0;
                 temp_width_offset+=width_offset;
                 for(i=0;i<output_node_count;i++){
-                    group.rect(50,50).fill(color[i]).move(start_x+temp_width_offset,start_y+output_offset);
+                    // group.rect(40,40).fill(color[i]).move(start_x+temp_width_offset,start_y+output_offset);
+                    temp=group.rect(40,40).move(start_x+temp_width_offset,start_y+output_offset);
+                    temp.attr({
+                        fill:color[i],'fill-opacity':0.5,stroke:"#000",'stroke-width':2
+                    });
                     output_offset+=height_offset;
                 }
 
@@ -334,8 +382,9 @@ def main():
                     for(k=0;k<layer1_count;k++){
                         offset2=0;
                         for(l=0;l<layer2_count;l++){	
-                                var line = group.line(150+offset3,125+offset1,100+width_offset+offset3,125+offset2)
+                                var line = group.line(140+offset3,170+offset1,100+width_offset+offset3,170+offset2)
                                 line.stroke({ color: color[l], width: 2, linecap: 'round' })
+                                line.attr({'opacity':0.8})
                                 offset2 = offset2+height_offset;
                             }
                         offset1 = offset1+height_offset;
