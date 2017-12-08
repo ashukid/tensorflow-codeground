@@ -1,6 +1,8 @@
 # tensorflow-codeground
-automatic code generation through static graphs :
+Automatic code generation through static graphs :
 
-1. Let user build a static graph through nodes ans links
-2. Generate code for the graph
-3. Tutorials on different components of the code
+1. User builds a static graph through nodes and links.
+2. Automatically code is generated with given graph variables.
+// todo --> Tutorials on different components of the code
+
+The website is live at http://aashu.me/tensorflow-codeground
