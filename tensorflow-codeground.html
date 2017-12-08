@@ -203,7 +203,14 @@ def main():
                 var remove_buttons=[];
                 var add_buttons=[];
                 var i,j;
-                button_offset=0;
+                var button_offset=0;
+                var input_text=group_button.text("Inputs").move(90,80);
+                input_text.font({
+                        family:   'Menlo'
+                        , size:     20
+                    });
+                input_text.style('fill:#f00;');
+
                 for(i=0;i<total_layers;i++){
                     var temp=group_button.rect(18,18).fill('white').move(100+button_offset,110);
                     temp.attr({stroke:"#000"});
@@ -229,6 +236,13 @@ def main():
                     remove_buttons.push(text);
                     button_offset = button_offset + width_offset;
                 }
+
+                var output_text=group_button.text("Outputs").move(80+button_offset-width_offset,80);
+                output_text.font({
+                        family:   'Menlo'
+                        , size:     20
+                    });
+                output_text.style('fill:#f00;');
 
                 var hidden_button_add=group_button.rect(20,20).fill('white').move(610,620);
                 hidden_button_add.attr({stroke:"#000"})
