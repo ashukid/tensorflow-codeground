@@ -1,84 +1,14 @@
-var draw = SVG('drawing').size(400,600)
-var group = draw.group().addClass('mygroup');
+<html>
+  <body style="margin:0;padding:0;">
+    <!-- <svg width="600px" height="500px" style="padding:100px">
+      <rect width="400" height="100" style="fill:rgb(0,0,255);stroke-width:10;stroke:rgb(0,0,0)">
+    </svg> -->
 
-function draw_graph(input_count,layer1_count,layer2_count){
-	group.clear();
-  var color = ['red','green','blue','pink','purple'];
-  var offset=0;
-  var temp_input;
-  for(temp_input=0;temp_input<input_count;temp_input++){
-    group.rect(50, 50).fill(color[temp_input]).move(40,40+offset);
-    offset = offset+60;
-  }
-  offset=0;
-  var temp_layer1;
-  for(temp_layer1=0;temp_layer1<layer1_count;temp_layer1++){
-    group.circle(50).fill(color[temp_layer1]).move(130,40+offset);
-    offset = offset+60;
-  }
-  var temp_layer2;
-  offset=0;
-  for(temp_layer2=0;temp_layer2<layer2_count;temp_layer2++){
-    group.circle(50).fill(color[temp_layer2]).move(230,40+offset);
-    offset = offset+60;
-  }
+    <svg width="600px" height="200px" style="padding:100px">
+      <rect width="400" height="100" style="fill:rgb(0,0,255);stroke-width:10;stroke:rgb(0,0,0)">
+    </svg>
 
-  var k,l;
-  var offset1=0;
-  var offset2=0;
-  for(k=0;k<input_count;k++){
-  offset2=0;
-    for(l=0;l<layer1_count;l++){	
-    var line = group.line(90,65+offset1,130,65+offset2)
-    line.stroke({ color: color[l], width: 2, linecap: 'round' })
-    offset2 = offset2+60;
-    }
-    offset1 = offset1+60;
-  }
-
-  offset1=0;
-  offset2=0;
-  for(k=0;k<layer1_count;k++){
-  offset2=0;
-  for(l=0;l<layer2_count;l++){	
-    var line = group.line(180,65+offset1,230,65+offset2)
-    line.stroke({ color: color[l], width: 2, linecap: 'round' })
-    offset2 = offset2+60;
-    }
-  offset1 = offset1+60;
-	}
-}
-
-var input_c=1,layer1_c=1,layer2_c=1;
-var input_button_add = draw.rect(20,20).fill('black').move(45,10);
-var input_button_minus = draw.rect(20,20).fill('brown').move(67,10);
-var layer1_button = draw.rect(20,20).fill('black').move(135,10);
-var layer2_button = draw.rect(20,20).fill('black').move(235,10);
-draw_graph(input_c,layer1_c,layer2_c);
-
-input_button_add.click(function(){
-		if(input_c < 5)
-			input_c = input_c+1;
-		draw_graph(input_c,layer1_c,layer2_c);
-});
-input_button_minus.click(function(){
-		if(input_c > 1)
-			input_c = input_c-1;
-		draw_graph(input_c,layer1_c,layer2_c);
-});
-layer1_button.click(function(){
-		if(layer1_c < 5)
-			layer1_c = layer1_c + 1;
-		draw_graph(input_c,layer1_c,layer2_c);
-});
-layer2_button.click(function(){
-		if(layer2_c < 5)
-			layer2_c = layer2_c + 1;
-		draw_graph(input_c,layer1_c,layer2_c);
-});
-
-
-
-
-
-
+    <button style="position:fixed;left:10px;top:20px;">hello</button>
+    <textarea style="position:fixed;left:10px;top:40px;">hello, i'm chutiya and what about you</textarea>
+  </body>
+</html>
