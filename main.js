@@ -48,7 +48,7 @@ function draw_graph(){
         hidden_width_offset+=width_offset;
         for(j=0;j<total_nodes;j++){
             // group.circle(40).fill(color[j]).move(start_x+temp_width_offset,start_y+hidden_offset);
-            temp=group.circle(35).move(start_x+hidden_width_offset,start_y+75+hidden_height_offset);
+            temp=group.circle(35).move(start_x+hidden_width_offset,start_y+45+hidden_height_offset);
             temp.attr({
             fill:color[j],'fill-opacity':0.2,stroke:"#000",'stroke-width':2
             });
