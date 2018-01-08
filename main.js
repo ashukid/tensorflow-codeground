@@ -25,12 +25,11 @@ var hidden_node_count=[10,10,10,10,10,10];
 var hidden_layers = hidden_node_count.length;
 var total_layers=hidden_layers+2;
 var height_offset=45;
-console.log(window.innerHeight)
 var width_offset=Math.floor(available_width/total_layers);
 
 // Non changable variables
 var start_x=30;
-var start_y=40;
+var start_y=50;
 var color = ['pink','#890','purple','orange','red','#630','#f8f','yellow','#f48','brown'];
 
 
@@ -128,9 +127,9 @@ function draw_graph(){
     offset2=0;
     var output_layer_start=start_x+available_width-100;
     var last_hidden_layer_end = start_x+35+offset3
-    for(i=0;i<input_node_count;i++){
+    for(i=0;i<hidden_node_count[hidden_layers-1];i++){
         offset2=0;
-        for(j=0;j<hidden_node_count[0];j++){
+        for(j=0;j<output_node_count;j++){
             var line=group.line(last_hidden_layer_end,start_y+17.5+offset1,output_layer_start,start_y+17.5+offset2);
             line.stroke({ color: color[i], width: 2, linecap: 'round' });
             line.attr({'opacity':0.4});
@@ -146,21 +145,112 @@ function draw_graph(){
 draw_graph();
 
 
-function draw_buttons(){
+function draw_static_buttons(){
 
     // input add buttons
     btn=document.createElement("BUTTON");
     btn.className='button';
-    btn.setAttribute('style','position:absolute;left:'+188+'px;top:'+140+'px;');
-    btn.setAttribute('id','input_add_button')
-    btn.innerHTML="+"
+    btn.setAttribute('style','position:absolute;left:'+184+'px;top:'+150+'px;');
+    btn.setAttribute('id','input_add_button');
+    btn.innerHTML="+";
+    btn.addEventListener("click",function(){
+        if(input_node_count<10){
+            input_node_count = input_node_count+1;
+            redraw_graph();
+        }
+    });
     document.getElementById('main').appendChild(btn);
 
+    //input remove button
     btn=document.createElement("BUTTON");
     btn.className='button';
-    btn.setAttribute('style','position:absolute;left:'+214+'px;top:'+140+'px;');
-    btn.innerHTML="-"
+    btn.setAttribute('style','position:absolute;left:'+212+'px;top:'+150+'px;');
+    btn.setAttribute('id','input_remove_button');
+    btn.innerHTML="-";
+    btn.addEventListener("click",function(e){
+        if(input_node_count>1){
+            input_node_count-=1;
+            redraw_graph();
+        }
+    });
     document.getElementById('main').appendChild(btn);
+
+    // output add button
+    btn=document.createElement("BUTTON");
+    btn.className='button';
+    btn.setAttribute('style','position:absolute;left:'+(184+available_width-105)+'px;top:'+150+'px;');
+    btn.setAttribute('id','output_add_button');
+    btn.innerHTML="+";
+    btn.addEventListener("click",function(){
+        if(output_node_count<10){
+            output_node_count = output_node_count+1;
+            redraw_graph();
+        }
+    });
+    document.getElementById('main').appendChild(btn);
+
+    // output remove button
+    btn=document.createElement("BUTTON");
+    btn.className='button';
+    btn.setAttribute('style','position:absolute;left:'+(212+available_width-105)+'px;top:'+150+'px;');
+    btn.setAttribute('id','output_remove_button');
+    btn.innerHTML="-";
+    btn.addEventListener("click",function(){
+        if(output_node_count>1){
+            output_node_count = output_node_count-1;
+            redraw_graph();
+        }
+    });
+    document.getElementById('main').appendChild(btn);
+
 }
 
-draw_buttons();
+function draw_dynamic_buttons(){
+
+    // hidden layer node add and remove button
+    var temp_width_offset=width_offset;
+    for(i=0;i<hidden_layers;i++){
+        btn=document.createElement("BUTTON");
+        btn.className='button';
+        btn.setAttribute('style','position:absolute;left:'+(184+temp_width_offset)+'px;top:'+150+'px;');
+        btn.setAttribute('id','hidden'+i+'_add_button');
+        btn.innerHTML="+";
+        function add_listener(i){
+            btn.addEventListener("click",function(){
+                if(hidden_node_count[i]<10){
+                    hidden_node_count[i] = hidden_node_count[i]+1;
+                    redraw_graph();
+                }
+            });
+        }
+        add_listener(i);
+        document.getElementById('main').appendChild(btn);
+
+        btn=document.createElement("BUTTON");
+        btn.className='button';
+        btn.setAttribute('style','position:absolute;left:'+(212+temp_width_offset)+'px;top:'+150+'px;');
+        btn.setAttribute('id','hidden'+i+'_remove_button');
+        btn.innerHTML="-";
+        function remove_listener(i){
+            btn.addEventListener("click",function(){
+                console.log(i);
+                if(hidden_node_count[i]>1){
+                    hidden_node_count[i] = hidden_node_count[i]-1;
+                    redraw_graph();
+                }
+            });
+        }
+        remove_listener(i);
+        document.getElementById('main').appendChild(btn);
+
+        temp_width_offset+=width_offset;
+    }
+}
+
+draw_static_buttons();
+draw_dynamic_buttons();
+
+function redraw_graph(){
+    group.clear();
+    draw_graph();
+}

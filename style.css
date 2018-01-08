@@ -65,4 +65,6 @@ html body{
 .button:hover{
     background-color: rgb(160, 153, 153);
     color: whitesmoke;
+    transition: 350ms ease;
+    
 }
