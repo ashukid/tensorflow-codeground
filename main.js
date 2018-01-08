@@ -15,7 +15,7 @@ var left_space=160;
 
 
 // manually changable variables
-var hidden_node_count=[8,8,8,8,8,8];
+var hidden_node_count=[10,10,10,10,10,10];
 var hidden_layers = hidden_node_count.length;
 var total_layers=hidden_layers+2;
 var height_offset=45;
@@ -24,8 +24,8 @@ var width_offset=Math.floor(available_width/total_layers);
 
 // Non changable variables
 var start_x=30;
-var start_y=50;
-var color = ['pink','blue','lightgreen','purple','orange','red','green','lightblue','yellow'];
+var start_y=60;
+var color = ['pink','skyblue','lightgreen','purple','orange','red','green','lightblue','yellow','brown'];
 
 
 function draw_graph(){
@@ -50,7 +50,7 @@ function draw_graph(){
         hidden_height_offset=0;
         hidden_width_offset+=width_offset;
         for(j=0;j<total_nodes;j++){
-            temp=group.circle(35).move(start_x+hidden_width_offset,start_y+45+hidden_height_offset);
+            temp=group.circle(35).move(start_x+hidden_width_offset,start_y+hidden_height_offset);
             temp.attr({
             fill:color[j],'fill-opacity':0.2,stroke:"#000",'stroke-width':2
             });
@@ -58,15 +58,67 @@ function draw_graph(){
         }
     }
 
+    // drawing output layer squares
     var output_offset=0;
-    hidden_width_offset+=width_offset;
     for(i=0;i<output_node_count;i++){
-        temp=group.rect(35,35).move(start_x+hidden_width_offset,start_y+output_offset);
+        temp=group.rect(35,35).move(start_x+available_width-100,start_y+output_offset);
         temp.attr({
             fill:color[i],'fill-opacity':0.5,stroke:"#000",'stroke-width':2
         });
         output_offset+=height_offset;
     }
-}
 
+
+    // input to first hidden layer lines
+    var offset1=0,offset2=0;
+    for(i=0;i<input_node_count;i++){
+        offset2=0;
+        for(j=0;j<hidden_node_count[0];j++){
+            var line=group.line(start_x+35,start_y+17.5+offset1,start_x+width_offset,start_y+17.5+offset2);
+            line.stroke({ color: color[i], width: 2, linecap: 'round' })
+            line.attr({'opacity':0.4})
+            offset2 = offset2+height_offset;
+        }
+        offset1 = offset1+height_offset
+    }
+
+    // hidden layers lines
+    offset1=0,offset2=0;
+    var offset3 = width_offset;
+    for(i=0;i<hidden_layers-1;i++){
+        layer1_count=hidden_node_count[i];
+        layer2_count=hidden_node_count[i+1];
+        offset1=0;
+        for(k=0;k<layer1_count;k++){
+            offset2=0;
+            for(l=0;l<layer2_count;l++){	
+                    var line = group.line(start_x+35+offset3,start_y+17.5+offset1,start_x+width_offset+offset3,start_y+17.5+offset2)
+                    line.stroke({ color: color[l], width: 2, linecap: 'round' })
+                    line.attr({'opacity':0.4})
+                    offset2 = offset2+height_offset;
+                }
+            offset1 = offset1+height_offset;
+        }
+        offset3+=width_offset;
+    }
+
+    offset1=0;
+    offset2=0;
+    var output_layer_start=start_x+available_width-100;
+    var last_hidden_layer_end = start_x+35+offset3
+    for(i=0;i<input_node_count;i++){
+        offset2=0;
+        for(j=0;j<hidden_node_count[0];j++){
+            var line=group.line(last_hidden_layer_end,start_y+17.5+offset1,output_layer_start,start_y+17.5+offset2);
+            line.stroke({ color: color[i], width: 2, linecap: 'round' })
+            line.attr({'opacity':0.4})
+            offset2 = offset2+height_offset;
+        }
+        offset1 = offset1+height_offset
+    }
+
+    // output layers lines
+
+
+}
 draw_graph();

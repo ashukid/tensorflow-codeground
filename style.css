@@ -35,20 +35,19 @@ html body{
 }
 .nav-button{
     background-color:white;
-    border: 2px solid cornflowerblue;
+    border: 2px solid rgb(90, 87, 87);
     border-radius: 6px;
     color: black;
     font-size: 16px;
     text-align: center;
     display: inline-block;
     position: relative;
-    left:45%;
     padding: 4px 4px;
     margin-bottom: 18px;
     margin-top: 0;
     text-decoration:none;
 }
 .nav-button:hover{
-    background-color: cornflowerblue;
+    background-color: rgb(90, 87, 87);
     color: white;
 }
