@@ -1,7 +1,6 @@
 html body{
     margin:0;
     padding: 0;
-    overflow-x: hidden;
 }
 .header{
     grid-area: header;
@@ -50,4 +49,20 @@ html body{
 .nav-button:hover{
     background-color: rgb(90, 87, 87);
     color: white;
+    transition: 350ms ease;
+}
+.button{
+    background-color: rgb(231, 240, 240);
+    border:none;
+    width:25px;
+    height:25px;
+    text-align: center;
+    text-decoration: none;
+    font-size:20px;
+    border-radius:50%;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: rgb(160, 153, 153);
+    color: whitesmoke;
 }
