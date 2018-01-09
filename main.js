@@ -18,7 +18,7 @@ var left_space=160;
 
 
 // manually changable variables
-var hidden_node_count=[6,6,6];
+var hidden_node_count=[5,5,5];
 var hidden_layers = hidden_node_count.length;
 var total_layers=hidden_layers+2;
 var height_offset=45;
@@ -46,7 +46,7 @@ function draw_graph(){
             
           }).from(0, 0).to(1, 1);
         temp.attr({
-            fill:gradient,'fill-opacity':0.2,stroke:"#000",'stroke-width':2
+            fill:gradient,'fill-opacity':0.6,stroke:"#000",'stroke-width':2
         });
         temp.radius(10);
         input_offset+=height_offset;
@@ -67,7 +67,7 @@ function draw_graph(){
               }).from(0, 0).to(1, 1);
             temp=group.circle(35).move(start_x+hidden_width_offset,start_y+hidden_height_offset);
             temp.attr({
-            fill:gradient,'fill-opacity':0.2,stroke:"#000",'stroke-width':2
+            fill:gradient,'fill-opacity':0.4,stroke:"#000",'stroke-width':2
             });
             hidden_height_offset+=height_offset;
         }
@@ -83,7 +83,7 @@ function draw_graph(){
             
           }).from(0, 0).to(1, 1);
         temp.attr({
-            fill:gradient,'fill-opacity':0.4,stroke:"#000",'stroke-width':2
+            fill:gradient,'fill-opacity':0.6,stroke:"#000",'stroke-width':2
         });
         output_offset+=height_offset;
     }
@@ -219,7 +219,7 @@ function draw_static_buttons(){
     // hidden layer add button
     btn=document.createElement("BUTTON");
     btn.className='button';
-    btn.setAttribute('style','position:absolute;left:50%;top:88%;');
+    btn.setAttribute('style','position:absolute;left:'+(160+420)+'px;top:'+(130+450)+'px;');
     btn.setAttribute('id','output_add_button');
     btn.innerHTML="+";
     btn.addEventListener("click",function(){
@@ -233,10 +233,10 @@ function draw_static_buttons(){
     });
     document.getElementById('main').appendChild(btn);
 
-    // hidden layer remoce button
+    // hidden layer remove button
     btn=document.createElement("BUTTON");
     btn.className='button';
-    btn.setAttribute('style','position:absolute;left:53%;top:88%;');
+    btn.setAttribute('style','position:absolute;left:'+(160+450)+'px;top:'+(130+450)+'px;');
     btn.setAttribute('id','output_add_button');
     btn.innerHTML="-";
     btn.addEventListener("click",function(){
@@ -313,6 +313,7 @@ function redraw_graph(){
 
 function generate_code(){
     document.getElementById("code").style.display="block";
+    document.getElementById("footer").style.display="block";
     document.getElementById("class_count").innerHTML = output_node_count;
     document.getElementById("feature_count").innerHTML = input_node_count;
     document.getElementById("hidden_count").innerHTML = hidden_layers;
@@ -328,7 +329,7 @@ function generate_code(){
     document.getElementById("hidden_params").innerHTML="";
     for(i=0;i<(hidden_layers-1);i++){
         var node1 = document.createElement('span');
-        node1.textContent = "    hidden_params"+(i+1)+" = {'weights':tf.Variable(tf.random_normal([hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count])),"
+        node1.textContent = "    hidden_layer"+(i+1)+"_parameters = {'weights':tf.Variable(tf.random_normal([hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count])),"
         node1.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
         var node2 = document.createElement('span');
         node2.textContent = "                  'biases':tf.Variable(tf.random_normal([hidden_layer"+(i+2)+"_node_count]))}"
