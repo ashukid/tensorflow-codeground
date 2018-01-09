@@ -219,7 +219,7 @@ function draw_static_buttons(){
     // hidden layer add button
     btn=document.createElement("BUTTON");
     btn.className='button';
-    btn.setAttribute('style','position:absolute;left:'+(160+420)+'px;top:'+(130+450)+'px;');
+    btn.setAttribute('style','position:absolute;left:50%;top:'+(130+450)+'px;');
     btn.setAttribute('id','output_add_button');
     btn.innerHTML="+";
     btn.addEventListener("click",function(){
@@ -236,7 +236,7 @@ function draw_static_buttons(){
     // hidden layer remove button
     btn=document.createElement("BUTTON");
     btn.className='button';
-    btn.setAttribute('style','position:absolute;left:'+(160+450)+'px;top:'+(130+450)+'px;');
+    btn.setAttribute('style','position:absolute;left:53%;top:'+(130+450)+'px;');
     btn.setAttribute('id','output_add_button');
     btn.innerHTML="-";
     btn.addEventListener("click",function(){
@@ -313,7 +313,6 @@ function redraw_graph(){
 
 function generate_code(){
     document.getElementById("code").style.display="block";
-    document.getElementById("footer").style.display="block";
     document.getElementById("class_count").innerHTML = output_node_count;
     document.getElementById("feature_count").innerHTML = input_node_count;
     document.getElementById("hidden_count").innerHTML = hidden_layers;
