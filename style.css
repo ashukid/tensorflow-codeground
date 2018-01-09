@@ -68,3 +68,14 @@ html body{
     transition: 350ms ease;
     
 }
+
+.code{
+    grid-area: code;
+}
+.code-container{
+    display:grid;
+    grid-template-areas: 'dummy1 code dummy2';
+    grid-template-columns: 100px auto 100px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}

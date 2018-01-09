@@ -1,18 +1,15 @@
 var available_width = (window.innerWidth)-320;
-var available_height = (window.innerHeight)-140;
-if(available_width>800){
-    var draw = SVG('drawing').size(available_width,available_height);
+// var available_height = (window.innerHeight)-140;
+var available_height=500;
+if(available_width<600){
+    available_width=600;
 }
-else{
-    var draw = SVG('drawing').size(1000,available_height);
-    available_width=1000;
-}
+var draw = SVG('drawing').size(available_width,available_height);
 var group = draw.group();
-var group_button = draw.group();
 
 // automatic changable variables
-var input_node_count=10;
-var output_node_count=10;
+var input_node_count=4;
+var output_node_count=2;
 
 
 // screen variable
@@ -21,7 +18,7 @@ var left_space=160;
 
 
 // manually changable variables
-var hidden_node_count=[10,10,10,10,10,10];
+var hidden_node_count=[6,6];
 var hidden_layers = hidden_node_count.length;
 var total_layers=hidden_layers+2;
 var height_offset=45;
@@ -30,7 +27,8 @@ var width_offset=Math.floor(available_width/total_layers);
 // Non changable variables
 var start_x=30;
 var start_y=50;
-var color = ['pink','#890','purple','orange','red','#630','#f8f','yellow','#f48','brown'];
+var color = ['pink','#890','purple','orange','red','yellow','#630','#f8f','#f48','brown'];
+var current_hidden_button_ids=[]
 
 
 function draw_graph(){
@@ -43,7 +41,8 @@ function draw_graph(){
         temp=group.rect(35,35).move(start_x,start_y+input_offset);
         var gradient = draw.gradient('linear', function(stop) {
             stop.at(0, '#09f')
-            stop.at(0.7, color[i])
+            stop.at(0.5, color[i])
+            stop.at(1.0, '#000')
             
           }).from(0, 0).to(1, 1);
         temp.attr({
@@ -123,6 +122,7 @@ function draw_graph(){
         offset3+=width_offset;
     }
 
+    // output layers lines
     offset1=0;
     offset2=0;
     var output_layer_start=start_x+available_width-100;
@@ -138,7 +138,20 @@ function draw_graph(){
         offset1 = offset1+height_offset
     }
 
-    // output layers lines
+    // left line for input layer mark
+    var line=group.line(10,start_y,10,start_y+350)
+    line.stroke({ color: 'black', width: 2, linecap: 'round' });
+    line.attr({'opacity':0.4});
+
+    // right line for output layer mark
+    var line=group.line(available_width-10,start_y,available_width-10,start_y+350)
+    line.stroke({ color: 'black', width: 2, linecap: 'round' });
+    line.attr({'opacity':0.4});
+
+    // bottom line for hidden layer addition button
+    var line=group.line(start_x+width_offset,start_y+380,last_hidden_layer_end,start_y+380)
+    line.stroke({ color: 'black', width: 2, linecap: 'round' });
+    line.attr({'opacity':0.4});
 
 
 }
@@ -154,7 +167,7 @@ function draw_static_buttons(){
     btn.setAttribute('id','input_add_button');
     btn.innerHTML="+";
     btn.addEventListener("click",function(){
-        if(input_node_count<10){
+        if(input_node_count<8){
             input_node_count = input_node_count+1;
             redraw_graph();
         }
@@ -182,7 +195,7 @@ function draw_static_buttons(){
     btn.setAttribute('id','output_add_button');
     btn.innerHTML="+";
     btn.addEventListener("click",function(){
-        if(output_node_count<10){
+        if(output_node_count<8){
             output_node_count = output_node_count+1;
             redraw_graph();
         }
@@ -203,10 +216,49 @@ function draw_static_buttons(){
     });
     document.getElementById('main').appendChild(btn);
 
-}
+    // hidden layer add button
+    btn=document.createElement("BUTTON");
+    btn.className='button';
+    btn.setAttribute('style','position:absolute;left:50%;top:88%;');
+    btn.setAttribute('id','output_add_button');
+    btn.innerHTML="+";
+    btn.addEventListener("click",function(){
+        if(hidden_layers<6){
+            hidden_layers +=1;
+            total_layers +=1;
+            hidden_node_count.push(1);
+            width_offset=Math.floor(available_width/total_layers);
+            redraw_graph();
+        }
+    });
+    document.getElementById('main').appendChild(btn);
 
+    // hidden layer remoce button
+    btn=document.createElement("BUTTON");
+    btn.className='button';
+    btn.setAttribute('style','position:absolute;left:53%;top:88%;');
+    btn.setAttribute('id','output_add_button');
+    btn.innerHTML="-";
+    btn.addEventListener("click",function(){
+        if(hidden_layers>1){
+            hidden_layers -=1;
+            total_layers -=1;
+            hidden_node_count.pop();
+            width_offset=Math.floor(available_width/total_layers);
+            redraw_graph();
+        }
+    });
+    document.getElementById('main').appendChild(btn);
+
+}
 function draw_dynamic_buttons(){
 
+    for(i=0;i<current_hidden_button_ids.length;i++){
+        console.log(current_hidden_button_ids[i])
+        var elem=document.getElementById(current_hidden_button_ids[i]);
+        document.getElementById("main").removeChild(elem);
+    }
+    current_hidden_button_ids=[]
     // hidden layer node add and remove button
     var temp_width_offset=width_offset;
     for(i=0;i<hidden_layers;i++){
@@ -214,10 +266,11 @@ function draw_dynamic_buttons(){
         btn.className='button';
         btn.setAttribute('style','position:absolute;left:'+(184+temp_width_offset)+'px;top:'+150+'px;');
         btn.setAttribute('id','hidden'+i+'_add_button');
+        current_hidden_button_ids.push('hidden'+i+'_add_button');
         btn.innerHTML="+";
         function add_listener(i){
             btn.addEventListener("click",function(){
-                if(hidden_node_count[i]<10){
+                if(hidden_node_count[i]<8){
                     hidden_node_count[i] = hidden_node_count[i]+1;
                     redraw_graph();
                 }
@@ -230,6 +283,7 @@ function draw_dynamic_buttons(){
         btn.className='button';
         btn.setAttribute('style','position:absolute;left:'+(212+temp_width_offset)+'px;top:'+150+'px;');
         btn.setAttribute('id','hidden'+i+'_remove_button');
+        current_hidden_button_ids.push('hidden'+i+'_remove_button');
         btn.innerHTML="-";
         function remove_listener(i){
             btn.addEventListener("click",function(){
@@ -253,4 +307,49 @@ draw_dynamic_buttons();
 function redraw_graph(){
     group.clear();
     draw_graph();
+    draw_dynamic_buttons();
+}
+
+
+function generate_code(){
+    document.getElementById("code").style.display="block";
+    document.getElementById("class_count").innerHTML = output_node_count;
+    document.getElementById("feature_count").innerHTML = input_node_count;
+    document.getElementById("hidden_count").innerHTML = hidden_layers;
+
+    document.getElementById("node_count").innerHTML="";
+    for(i=0;i<hidden_layers;i++){
+        var node = document.createElement('span');
+        node.textContent = "hidden_layer" + (i+1) + "_node_count = "+ hidden_node_count[i] ;
+        node.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+        var element = document.getElementById("node_count");
+        element.appendChild(node);
+    }
+    document.getElementById("hidden_params").innerHTML="";
+    for(i=0;i<(hidden_layers-1);i++){
+        var node1 = document.createElement('span');
+        node1.textContent = "    hidden_params"+(i+1)+" = {'weights':tf.Variable(tf.random_normal([hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count])),"
+        node1.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+        var node2 = document.createElement('span');
+        node2.textContent = "                  'biases':tf.Variable(tf.random_normal([hidden_layer"+(i+2)+"_node_count]))}"
+        node2.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+        var element = document.getElementById("hidden_params");
+        element.appendChild(node1);
+        element.appendChild(node2);
+        document.getElementById("last_hidden_layer").innerHTML = "hidden_layer"+(i+2)+"_node_count";
+    }
+    document.getElementById("hidden_layers").innerHTML="";
+    for(i=0;i<hidden_layers;i++){
+        var node1 = document.createElement('span');
+        node1.textContent = "    hidden_layer"+(i+1)+" = tf.add(tf.matmul(data,hidden_params"+(i+1)+"['weights']), hidden_params"+(i+1)+"['biases'])";
+        node1.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+        var node2 = document.createElement('span');
+        node2.textContent = "    hidden_layer"+(i+1)+" = tf.nn.relu(hidden_layer"+(i+1)+")";
+        node2.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
+        var element = document.getElementById("hidden_layers");
+        element.appendChild(node1);
+        element.appendChild(node2);
+        document.getElementById("last_layer").innerHTML = "hidden_layer"+(i+1);
+    }
+
 }
