@@ -18,7 +18,7 @@ var left_space=160;
 
 
 // manually changable variables
-var hidden_node_count=[6,6];
+var hidden_node_count=[6,6,6];
 var hidden_layers = hidden_node_count.length;
 var total_layers=hidden_layers+2;
 var height_offset=45;
