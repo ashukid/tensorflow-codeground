@@ -41,12 +41,10 @@ function draw_graph(){
         temp=group.rect(35,35).move(start_x,start_y+input_offset);
         var gradient = draw.gradient('linear', function(stop) {
             stop.at(0, '#09f')
-            stop.at(0.5, color[i])
-            stop.at(1.0, '#000')
-            
+            stop.at(0.6, color[0])
           }).from(0, 0).to(1, 1);
         temp.attr({
-            fill:gradient,'fill-opacity':0.6,stroke:"#000",'stroke-width':2
+            fill:gradient,'fill-opacity':0.8,stroke:"#000",'stroke-width':2
         });
         temp.radius(10);
         input_offset+=height_offset;
@@ -62,12 +60,12 @@ function draw_graph(){
         for(j=0;j<total_nodes;j++){
             var gradient = draw.gradient('linear', function(stop) {
                 stop.at(0, '#09f')
-                stop.at(0.7, color[j])
+                stop.at(0.6, color[0])
                 
               }).from(0, 0).to(1, 1);
             temp=group.circle(35).move(start_x+hidden_width_offset,start_y+hidden_height_offset);
             temp.attr({
-            fill:gradient,'fill-opacity':0.4,stroke:"#000",'stroke-width':2
+            fill:gradient,'fill-opacity':0.6,stroke:"#000",'stroke-width':2
             });
             hidden_height_offset+=height_offset;
         }
@@ -79,11 +77,11 @@ function draw_graph(){
         temp=group.rect(35,35).move(start_x+available_width-100,start_y+output_offset);
         var gradient = draw.gradient('linear', function(stop) {
             stop.at(0, '#09f')
-            stop.at(0.7, color[i])
+            stop.at(0.7, color[0])
             
           }).from(0, 0).to(1, 1);
         temp.attr({
-            fill:gradient,'fill-opacity':0.6,stroke:"#000",'stroke-width':2
+            fill:gradient,'fill-opacity':0.8,stroke:"#000",'stroke-width':2
         });
         output_offset+=height_offset;
     }
@@ -96,7 +94,7 @@ function draw_graph(){
         for(j=0;j<hidden_node_count[0];j++){
             var line=group.line(start_x+35,start_y+17.5+offset1,start_x+width_offset,start_y+17.5+offset2);
             line.stroke({ color: color[i], width: 2, linecap: 'round' })
-            line.attr({'opacity':0.4})
+            line.attr({'opacity':0.5})
             offset2 = offset2+height_offset;
         }
         offset1 = offset1+height_offset
@@ -114,7 +112,7 @@ function draw_graph(){
             for(l=0;l<layer2_count;l++){	
                     var line = group.line(start_x+35+offset3,start_y+17.5+offset1,start_x+width_offset+offset3,start_y+17.5+offset2);
                     line.stroke({ color: color[l], width: 2, linecap: 'round' });
-                    line.attr({'opacity':0.26});
+                    line.attr({'opacity':0.4});
                     offset2 = offset2+height_offset;
                 }
             offset1 = offset1+height_offset;
@@ -132,7 +130,7 @@ function draw_graph(){
         for(j=0;j<output_node_count;j++){
             var line=group.line(last_hidden_layer_end,start_y+17.5+offset1,output_layer_start,start_y+17.5+offset2);
             line.stroke({ color: color[i], width: 2, linecap: 'round' });
-            line.attr({'opacity':0.4});
+            line.attr({'opacity':0.5});
             offset2 = offset2+height_offset;
         }
         offset1 = offset1+height_offset
@@ -328,10 +326,14 @@ function generate_code(){
     document.getElementById("hidden_params").innerHTML="";
     for(i=0;i<(hidden_layers-1);i++){
         var node1 = document.createElement('span');
-        node1.textContent = "    hidden_layer"+(i+1)+"_parameters = {'weights':tf.Variable(tf.random_normal([hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count])),"
+        node1.textContent = "    hidden_layer"+(i+1)+"_parameters = {\n\
+                                    'weights':tf.Variable(tf.random_normal(\n\
+                                    [hidden_layer"+(i+1)+"_node_count, hidden_layer"+(i+2)+"_node_count] )),"
         node1.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
         var node2 = document.createElement('span');
-        node2.textContent = "                  'biases':tf.Variable(tf.random_normal([hidden_layer"+(i+2)+"_node_count]))}"
+        node2.textContent = "                                   'biases':tf.Variable(tf.random_normal(\n\
+                                    [hidden_layer"+(i+2)+"_node_count]))\n\
+                                }"
         node2.setAttribute("style","display:inherit;font-family:inherit;white-space:inherit;margin:0px;padding:0px");
         var element = document.getElementById("hidden_params");
         element.appendChild(node1);

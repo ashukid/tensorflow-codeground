@@ -6,7 +6,9 @@ html body{
 .grid-container{
     display:grid;
     grid-template-areas: 'header header header'
-                          'left main right';
+                          'left main right'
+                          'code code code'
+                          'dummy1 footer dummy2';
     grid-template-columns: 144px auto 144px;
     grid-column-gap: 16px;
     grid-row-gap: 16px;
@@ -25,6 +27,13 @@ html body{
 .main{
     grid-area: main;
     /* background-color: rgb(184, 234, 238); */
+}
+
+.code{
+    grid-area: code;
+}
+.footer{
+    grid-area: footer;
 }
 
 
@@ -75,13 +84,10 @@ html body{
     
 }
 
-.code-container{
+/* .code-container{
     display:grid;
     grid-template-areas: 'dummy1 code dummy2';
     grid-template-columns: 50px auto 50px;
     grid-column-gap: 16px;
     grid-row-gap: 16px;
-}
-.code{
-    grid-area: code;
-}
+} */
